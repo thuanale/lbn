@@ -1,0 +1,8 @@
+3. Filtering data
+3.1.
+3.2. NULL
+- NULL indicates that an info is missed or not applicable.
+- NULL can't compare with any other values even itself.
+- NULL is consider as smallest value & will be sorted after/before all values in ASC/DESC order
+- To reverse the order, NULL LAST/FIRST
+- List values as NULL: {column | expression } IS/IS NOT NULL
