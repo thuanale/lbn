@@ -1,8 +1,52 @@
-3. Filtering data
-3.1.
-3.2. NULL
-- NULL indicates that an info is missed or not applicable.
+            C1. What is sqlite
+- serverless: need no server (Apps <-directly -> DB)
+- self-contained: requires minimal support from system
+- zero-configuration: need no configuration file to run.
+- transactional: ACID compliant
+    Atomicity: each transaction is treated as a single unit.
+	Consistent: a transaction only has 2 statuses "completed"/"failed".
+	Isolated: between transaction
+	Durability: once the transaction is finished, it is saved.
+---------------------------------------------------------------------
+            C3. Filtering data
+1.
+2. NULL
+    - NULL indicates that an info is missed or not applicable.
 - NULL can't compare with any other values even itself.
 - NULL is consider as smallest value & will be sorted after/before all values in ASC/DESC order
 - To reverse the order, NULL LAST/FIRST
 - List values as NULL: {column | expression } IS/IS NOT NULL
+
+---------------------------------------------------------------------
+            C4. Joining tables
+- INNER JOIN: returns all rows from left table and the matching rows from right table.
+- LEFT JOIN: returns all rows from left table and the matching rows from right table.
+If a row from the left table doesn’t have a matching row in the right table, SQLite includes columns of the rows in the left table and NULL for the columns of the right table.
+- CROSS JOIN: If the first table has N rows, the second table has M rows, the final result will have NxM rows.
+- FULL OUTER JOIN: not supported by sqlite directly, but we can use LEFT JOIN + UNION ALL
+--------------------------------------------------------------------
+			C5. Grouping data
+1. GROUP BY
+- The GROUP BY clause a selected group of rows into summary rows by values of one or more columns.
+- Return one row for each group.
+- Following the GROUP BY is a column or list of comma-separated columns.
+
+2. HAVING
+- The HAVING clause specifies a search condition for a group.
+- Usually use with GROUP BY.
+--------------------------------------------------------------------
+			C6. Set operators
+1. UNION
+- UNION & UNION ALL: combine rows from two or more queries into a single result set
+- UNION combine result from queries into a single list and remove duplicated row(s).
+- UNION ALL: 
+    simple combine result of first queries with following ones (even duplicated rows)
+	run faster than UNION
+
+2. EXCEPT
+- Compares the result sets of two queries and returns distinct rows from the left query that are not output by the right query.
+
+3. INTERSECT
+- Compares the result sets of two queries and returns distinct rows that are output by both queries.
+--------------------------------------------------------------------
+			C7.
