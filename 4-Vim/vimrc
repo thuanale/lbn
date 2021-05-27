@@ -1,0 +1,34 @@
+" No backward compatible with Vi. Enable advanced futures on VIM
+set nocompatible
+"--------------------------
+" Set text
+" Encoding
+set encoding=utf-8
+" Location of cursor
+set ruler
+" Lines limit
+set textwidth=79
+" Set number & relative number based on current line
+set number
+set relativenumber
+" set menu
+set wildmenu
+" show incomplete command
+"set showcmd
+"
+"set path
+"--------------------------
+" Set search
+" Set highlight search
+set hlsearch
+" Incremental search
+set incsearch
+" Insenstive case except when uppercase is choosen.
+set ignorecase
+set smartcase
+"--------------------------
+" Other
+" Confirm to save files before closing
+set confirm
+" Always display status on the last line
+set laststatus=2

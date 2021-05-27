@@ -49,4 +49,33 @@ If a row from the left table doesn’t have a matching row in the right table, S
 3. INTERSECT
 - Compares the result sets of two queries and returns distinct rows that are output by both queries.
 --------------------------------------------------------------------
-			C7.
+			C7. Subquery
+1. Subquery
+2. Exists
+- (NOT) EXISTS(subquery): test for the existence of rows returned by a subquery.
+--------------------------------------------------------------------
+			C8. More query data technique
+1. CASE
+- CASE
+     WHEN bool_expression_1 THEN result_1
+     WHEN bool_expression_2 THEN result_2
+     [ ELSE result_else ] 
+END
+- The SQLite CASE expression evaluates a list of conditions and returns an expression based on the result of the evaluation.
+--------------------------------------------------------------------
+			C9. Changing data
+1. INSERT
+INSERT INTO table1 (column1,column2 ,..)
+VALUES 
+   (value1,value2 ,...),
+   (value1,value2 ,...),
+    ...
+   (value1,value2 ,...);
+- INSERT DEFAULT VALUES: 
+    insert a new row into a table with specified default values,
+	or NULL if default value is not available and constraint NOT NULL is not set not.
+- Inserting new rows with data provided by a SELECT statement 
+INSERT INTO table
+  query
+  
+2. 
