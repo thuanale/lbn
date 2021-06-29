@@ -2,9 +2,10 @@ from selenium.webdriver import Ie
 import page 
 import sys
 
-UID = "SGSIN-THUAN" #sys.argv[1]
-PW = "08m)#O2021ndayMarch" #sys.argv[2]
+UID='SGSIN-THUAN'
+PWD='12s)^A2021turday2021'
 FILE = "C:/Users/t.le/Desktop/RETURN.txt" #sys.argv[3]
+
 
 class CrownRM(): 
     def setup(self):
@@ -68,13 +69,3 @@ class CrownRM():
                 
     def tear_down(self):
         self.driver.quit()
-
-browser = CrownRM()
-browser.setup()
-browser.login(UID,PW)
-browser.go_to_search()
-browser.prepare_search()
-browser.load_tape(FILE)
-browser.check_tape()
-#browser.prepare_search();browser.load_tape(FILE);browser.check_tape()
-#browser.tear_down()
