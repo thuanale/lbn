@@ -25,29 +25,29 @@ class App(ttk.Frame):
     Entry(self, width=20, textvariable=self.pw, show='*').grid(column=2, row=2,
     sticky=(W, E))
 
-    ttk.Button(self, text="Start", command=self.start).grid(column=1, row=3,
+    ttk.Button(self, text="Setup", command=self.setup).grid(column=1, row=3,
     sticky=(W, E))
-    ttk.Button(self, text="Run", command=self.run).grid(column=3, row=3,
+    ttk.Button(self, text="Run", command=self.run).grid(column=2, row=3,
     sticky=(W, E))
-    ttk.Button(self, text="Stop", command=self.stop).grid(column=2, row=4,
+    ttk.Button(self, text="Quit", command=self.stop).grid(column=3, row=3,
     sticky=(W, E))
   
   def set_labels(self):
     self.master.title("Crown Check Tk")
-    ttk.Label(self, text="ID").grid(column=1, row=1, sticky=(E))
-    ttk.Label(self, text="pw").grid(column=1, row=2, sticky=(E))
+    ttk.Label(self, text="Username").grid(column=1, row=1, sticky=(E))
+    ttk.Label(self, text="Password").grid(column=1, row=2, sticky=(E))
     
     for child in self.winfo_children(): 
       child.grid_configure(padx=5, pady=5)
 
-  def start(self):
-    self.browser = CrownRM()
-    self.browser.setup()
+  def setup(self):
+    if not self.browser:
+        self.browser = CrownRM()
+        self.browser.setup()
     UID = str(self.uid.get())
     PW = str(self.pw.get())
     self.browser.login(UID, PW)
     self.browser.go_to_search()
-
 
   def run(self):
     self.browser.prepare_search()

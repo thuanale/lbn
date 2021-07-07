@@ -2,8 +2,6 @@ from selenium.webdriver import Ie
 import page 
 import sys
 
-UID='SGSIN-THUAN'
-PWD='12s)^A2021turday2021'
 FILE = "C:/Users/t.le/Desktop/RETURN.txt" #sys.argv[3]
 
 
