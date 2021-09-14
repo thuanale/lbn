@@ -27,13 +27,13 @@ class Authen(Base):
         return response.status_code
 
 class Submit(Base):
-    Engie = {
+    Internal = {
         "CreationDate":"",
         "Duration":"120",
-        "ActivityId":"2515",
-        "CompanyId":"3586",
-        "ProjectId":"29476",
-        "Title":"Monitoring HPOMI"
+        "ActivityId":"2521",
+        "CompanyId":"2865",
+        "ProjectId":"21057",
+        "Title":"Learning, automating"
         }
         
     DFS1 = {
@@ -42,7 +42,7 @@ class Submit(Base):
         "ActivityId":"2515",
         "CompanyId":"3312",
         "ProjectId":"19713",
-        "Title":"Robot monitoring, check backup, take call, report"
+        "Title":"Monitoring, checking backup, take call, report, patching"
         }
         
     DFS2 = {
@@ -51,11 +51,11 @@ class Submit(Base):
         "ActivityId":"2515",
         "CompanyId":"3312",
         "ProjectId":"19713",
-        "Title":"Robot monitoring, check backup, take call, report"
+        "Title":"Monitoring, checking backup, take call, report, patching"
         }
 
     def default(self,date,shift):
-        self.Engie["CreationDate"] = date
+        self.Internal["CreationDate"] = date
         self.DFS1["CreationDate"] = date
         
         if shift == 'day': 
@@ -65,10 +65,6 @@ class Submit(Base):
             next_date = datetime.date.fromisoformat(date) + datetime.timedelta(days=1)
             self.DFS2["CreationDate"] = str(next_date)         
         
-        for data in (self.Engie, self.DFS1, self.DFS2):
+        for data in (self.Internal, self.DFS1, self.DFS2):
             self.session.post(self.url + '/MTV.json/AddTime',json=data)
-            
-            
-
-
 
