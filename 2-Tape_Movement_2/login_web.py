@@ -4,7 +4,7 @@ import sys
 
 class CrownRM(): 
     def setup(self):
-        self.driver = Chrome() 
+        self.driver = Chrome("chromedriver.exe") 
         self.driver.get('https://rmorder09.rminteract.com/')
         
     def login(self,UID,PW):
@@ -14,12 +14,14 @@ class CrownRM():
         assert login_page.is_account_match()
     
     def go_to_search(self):
-        page.SearchPage(self.driver).advanced_search()
+        search_page = page.SearchPage(self.driver)
+        search_page.result_view()
+        search_page.max_row()
+        search_page.advanced_search()
         
     def prepare_search(self):
-        search_page = page.AdvancedPage(self.driver)
-        search_page.clear_all()
-        search_page.max_row()
+        adv_search_page = page.AdvancedPage(self.driver)
+        adv_search_page.clear_all()
         
     def load_tape(self,file):
         adv_search_page = page.AdvancedPage(self.driver)
@@ -28,12 +30,14 @@ class CrownRM():
         self.result = adv_search_page.process_tapes(tapes)
     
     def print_result(self):
+        print("---------------------")
         for k,v in self.result.items():
             print("{0}: {1}".format(k,len(v)))
             if len(v):
                 for t in v:
                     print(t)
                 print()
+        print("---------------------")
         
     def tear_down(self):
         self.driver.quit()

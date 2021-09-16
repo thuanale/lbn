@@ -49,7 +49,7 @@ class App(ttk.Frame):
     PW = str(self.pw.get())
     self.browser.login(UID, PW)
     self.browser.go_to_search()
-
+    
   def run(self):
     self.browser.prepare_search()
     self.browser.load_tape(FILE)
