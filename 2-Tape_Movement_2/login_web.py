@@ -21,6 +21,7 @@ class CrownRM():
         
     def prepare_search(self):
         adv_search_page = page.AdvancedPage(self.driver)
+        adv_search_page.select_query()
         adv_search_page.clear_all()
         
     def load_tape(self,file):

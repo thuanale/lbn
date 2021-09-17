@@ -45,6 +45,7 @@ class SearchPage(BasePage):
         action.move_to_element(driver.find_element(*MainLocators.ROW_LENGTH)).click()
         action.send_keys(Keys.END).send_keys(Keys.ENTER)
         action.perform()
+        sleep(1)
     
     def result_view(self):
         driver = self.driver
@@ -55,8 +56,16 @@ class SearchPage(BasePage):
         action.move_to_element(driver.find_element(*MainLocators.TAPE_STANDARD))
         action.send_keys(Keys.END).send_keys(Keys.ENTER)
         action.perform()
+        sleep(1)
 
 class AdvancedPage(BasePage):
+    def select_query(self):
+        action = ActionChains(self.driver)
+        action.move_to_element(self.driver.find_element(*AdvSearchLocators.QUERY_ITEM))
+        action.click().send_keys(Keys.HOME).send_keys(Keys.ENTER)
+        action.perform()
+        sleep(2)
+        
     def clear_all(self):
         self.driver.find_element(*AdvSearchLocators.CLEAR_ALL).click()
            
@@ -77,7 +86,7 @@ class AdvancedPage(BasePage):
             ele.send_keys(Keys.ENTER)
             sleep(2)
             matched = self.get_match()
-            if matched == '':
+            if matched == '0':
                 status["NEW"].append(tape)
             elif matched != '1' :
                 status["DUP"].append(tape)

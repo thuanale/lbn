@@ -24,3 +24,4 @@ class AdvSearchLocators(object):
     TAPE_BOX = (By.ID, "parameter-0")
     SEARCH_BUTTON = (By.XPATH, '//*[@id="quick-query-execute"]')
     MATCHED_ITEM = (By.XPATH, '//*[@id="quick-query-results-matched"]')
+    QUERY_ITEM = (By.XPATH, '//*[@id="quick-query-group"]/span[2]')
