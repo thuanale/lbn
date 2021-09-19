@@ -20,7 +20,7 @@ class LoginPage(BasePage):
         self.driver.find_element(*LoginLocators.USER_BOX).send_keys(uid)
         self.driver.find_element(*LoginLocators.PW_BOX).send_keys(pwd)
         self.driver.find_element(*LoginLocators.LOGIN_BUTTON).click()
-        sleep(2)
+        sleep(3)
 
     def is_title_match(self):
         return "oneilOrder Login" in self.driver.title, "Wrong link"
@@ -88,12 +88,14 @@ class AdvancedPage(BasePage):
             matched = self.get_match()
             if matched == '0':
                 status["NEW"].append(tape)
-            elif matched != '1' :
+            elif matched != '1':
                 status["DUP"].append(tape)
         self.unselect_all()
         sleep(2)
         
         page_rows = self.driver.find_elements(*AdvSearchLocators.PAGE_ROW)
+        scroll = self.driver.find_element(*AdvSearchLocators.SCROLL)
+        
         for row in page_rows:
             cols = row.find_elements(*AdvSearchLocators.COLUMN)
             account = cols[0].text
@@ -102,5 +104,8 @@ class AdvancedPage(BasePage):
                 status["RD1066C"].append(alt_code)
             if alt_code[:6] in status["DUP"]:
                 row.click()
+            scroll.send_keys(Keys.DOWN)
+            sleep(1)
+        scroll.send_keys(Keys.HOME)
         return status
         

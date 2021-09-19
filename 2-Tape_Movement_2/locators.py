@@ -25,3 +25,4 @@ class AdvSearchLocators(object):
     SEARCH_BUTTON = (By.XPATH, '//*[@id="quick-query-execute"]')
     MATCHED_ITEM = (By.XPATH, '//*[@id="quick-query-results-matched"]')
     QUERY_ITEM = (By.XPATH, '//*[@id="quick-query-group"]/span[2]')
+    SCROLL = (By.XPATH,'//*[@id="results-grid"]/div[3]')
