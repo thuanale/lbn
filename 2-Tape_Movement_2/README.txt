@@ -25,3 +25,5 @@ STEP 7: Click QUIT to close program.
 NOTE: 
 - If you have an issue with USERNAME/PASSWORD, just repeat STEP 2 & 3 again.
 - Repeat STEP 4 & STEP 5 in OVERALL STEPS to search as many times as you want.
+- If you has issue with webdriver, go to this site & override driver located in this folder.
+https://chromedriver.chromium.org/downloads

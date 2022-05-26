@@ -20,7 +20,6 @@ class LoginPage(BasePage):
         self.driver.find_element(*LoginLocators.USER_BOX).send_keys(uid)
         self.driver.find_element(*LoginLocators.PW_BOX).send_keys(pwd)
         self.driver.find_element(*LoginLocators.LOGIN_BUTTON).click()
-        sleep(3)
 
     def is_title_match(self):
         return "oneilOrder Login" in self.driver.title, "Wrong link"
@@ -31,33 +30,33 @@ class LoginPage(BasePage):
 class SearchPage(BasePage):
     def advanced_search(self):
         driver = self.driver
-        WebDriverWait(driver, 60).until(lambda x: x.find_element(*MainLocators.SEARCH_SELECT))
+        WebDriverWait(driver,300).until(lambda x: x.find_element(*MainLocators.SEARCH_SELECT))
         action = ActionChains(driver)
         action.move_to_element(driver.find_element(*MainLocators.SEARCH_SELECT)).click()
         action.send_keys(Keys.END).send_keys(Keys.ENTER)
         action.perform()
-        sleep(2)
     
     def max_row(self):
         driver = self.driver
-        WebDriverWait(driver,30).until(lambda x: x.find_element(*MainLocators.ROW_LENGTH))
+        WebDriverWait(driver,300).until(lambda x: x.find_element(*MainLocators.ROW_LENGTH))
         action = ActionChains(driver)
         action.move_to_element(driver.find_element(*MainLocators.ROW_LENGTH)).click()
         action.send_keys(Keys.END).send_keys(Keys.ENTER)
         action.perform()
-        sleep(1)
+        sleep(2)
     
     def result_view(self):
         driver = self.driver
+        WebDriverWait(driver,300).until(lambda x: x.find_element(*MainLocators.ROW_LENGTH))
         driver.find_element(*MainLocators.SETTINGS).click()
         driver.find_element(*MainLocators.CHOOSE_FOMRAT).click()
-        WebDriverWait(driver,30).until(lambda x: x.find_element(*MainLocators.TAPE_STANDARD))
+        WebDriverWait(driver,300).until(lambda x: x.find_element(*MainLocators.TAPE_STANDARD))
         action = ActionChains(driver)
         action.move_to_element(driver.find_element(*MainLocators.TAPE_STANDARD))
         action.send_keys(Keys.END).send_keys(Keys.ENTER)
         action.perform()
-        sleep(1)
-
+        sleep(2)
+        
 class AdvancedPage(BasePage):
     def select_query(self):
         action = ActionChains(self.driver)
@@ -84,7 +83,7 @@ class AdvancedPage(BasePage):
             ele.clear()
             ele.send_keys(tape)
             ele.send_keys(Keys.ENTER)
-            sleep(2)
+            sleep(3)
             matched = self.get_match()
             if matched == '0':
                 status["NEW"].append(tape)
