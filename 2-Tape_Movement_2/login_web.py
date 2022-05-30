@@ -4,7 +4,7 @@ import sys
 
 class CrownRM(): 
     def setup(self):
-        self.driver = Chrome("chromedriver.exe") 
+        self.driver = Chrome("./chromedriver") 
         self.driver.get('https://rmorder09.rminteract.com/')
         
     def login(self,UID,PW):
