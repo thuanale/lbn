@@ -1,0 +1,266 @@
+<!doctype html>
+<html>
+<style type="text/css">
+h3{
+	color: #ffffff;
+    text-transform: capitalize;
+    font-size: 1.125rem;
+	line-height: 1.5rem;
+	margin:0 0 0 0;
+}
+h5{
+	color:#b9c0d3;
+	font-weight: 300;	
+	font-size: 1.25rem;
+	line-height: 1.25rem;
+	margin:0 0 0 0;
+}
+
+p { 
+	color: #ffffff;
+	font-size:1.1rem;
+	margin:0 0 0 0;
+	line-height:5px;
+}
+
+p.warning2{
+	color: #f2125e;
+	font-size: 1.4rem;
+}
+p.warning1{
+	color:#ff8300;
+	font-size: 1.25rem;
+}
+p.normal{
+	color:#a3a9b7;
+	font-size:0.9rem;
+}
+p.ok{
+	color:#448bff;
+}
+a { color: #fe921f; text-decoration: underline; }
+
+
+a:hover { color: #ffffff }
+
+
+.date { background: #fe921f; color: #ffffff; display: inline-block; font-family: 'Lato', sans-serif; font-size: 12px; font-weight: bold; line-height: 12px; letter-spacing: 1px; margin: 0 0 30px; padding: 10px 15px 8px; text-transform: uppercase; }
+
+body{
+	font-family: "Poppins", sans-serif;
+	background-color:#161d33;
+
+}
+
+</style>
+
+  <head>
+    <title>Server Monitor</title>
+    <meta charset="UTF-8">
+	<div id="brms-report">
+		
+	</div>
+    <div id="asp-report">
+		
+	</div>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+		   
+
+      function connect() {         
+
+          wsocket = new WebSocket("ws://localhost:8989");          
+          wsocket.onopen = onopen;
+          wsocket.onmessage = onmessage;
+          wsocket.onclose = onclose; 
+		  test();
+      }
+	  function test(){
+	       $.ajax({
+              url: "script.py",
+             context: document.body
+            }).done(function() {
+             alert('finished python script');;
+            });
+	  }
+      function onopen() {
+          console.log("Connected!");             
+          wsocket.send('bbfvIqpCkBHR');
+		  myLoop();   
+		  
+      }
+	  function myLoop () {           //  create a loop function
+		var i =0;
+	   setTimeout(function () {    //  call a 3s setTimeout when the loop is called
+		  //alert('hello');          //  your code here
+		  wsocket.send('ping from client');
+		  i++;                     //  increment the counter
+		  if (i < 10) {            //  if the counter < 10, call the loop function
+			 myLoop();             //  ..  again which will trigger another 
+		  }                        //  ..  setTimeout()
+	     }, 3000)
+	  }
+
+	  function replaceAll(str, find, replace) {
+		return str.replace(new RegExp(find, 'g'), replace);
+	  }
+	  function readBRMS(data){
+	     var output = "";
+		 var lines = data.split("\n");
+		 //if (data.contains("Reported at:"));
+		 var serverName ="";
+		 lines.forEach(function(line) {
+			//output+=line +"</br>";
+			if (line.includes("Time Interval",0)){
+			}else
+			if (line.includes("BRMSSAVE-MONITOR",0)){
+				output+="<h3>"+line+"</h3></br>";
+			}else if (line.includes("Reported at",0)){
+				output+="<h5>"+line+"</h5></br>";
+			}else if (line.includes("=", 0)){
+				serverName = replaceAll(line,"=","");
+				
+			}else if (line.includes("BRMSSAVE",0)){
+				var index = line.lastIndexOf(":") + 1;
+				var state = line.substring(index, line.length).trim();
+				if (state != "OFF"){
+					if (state.includes("NOT RUNNING",0)){
+						output+="<p class='warning1'>"+serverName +" = ";
+						output+=state +"</p> </br>";
+					}else if (state == "MSGW" || state=="ERROR"){
+						output+="<p class='warning2'>"+serverName +" = ";
+						output+=state +"</p> </br>";
+					}else if (state =="OK"){
+						output+="<p class='ok'>"+serverName +" = ";
+						output+=state +"</p> </br>";
+					}
+					else{
+						output+="<p>"+serverName +" = ";
+						output+=state +"</p> </br>";
+					}
+				}
+			}else{
+			    output+=line+"</br>";
+			}
+		 });
+		 $("#brms-report").html(output);
+
+		 //if (
+	  }
+	  
+	  function readASP(data){
+	  
+	     var output = "";
+		 var lines = data.split("\n");
+		 //if (data.contains("Reported at:"));
+		 var serverName ="";
+		 var list = {};
+		 lines.forEach(function(line) {
+			//output+=line +"</br>";
+			if (line.includes("Time Interval",0)){
+			}else
+			if (line.includes("ASP-MONITOR",0)){
+				output+="<h3>"+line+"</h3></br>";
+			}else if (line.includes("Reported at",0)){
+				output+="<h5>"+line+"</h5></br>";
+			}else if (line.includes("=", 0)){
+				serverName = replaceAll(line,"=","");
+				
+			}else if (line.includes("%ASP", 0)){
+				var index = line.lastIndexOf(",") + 1;
+				var asp = line.substring(index, line.length).trim();
+				if (asp != "ERROR"){
+					list[serverName]=parseFloat(asp);
+				}
+				
+			}else{
+			    output+=line+"</br>";
+			}
+		 });
+		 list= sort_object(list)
+
+		 var newOutput=output;
+		 for(var serverName in list){
+			var asp = list[serverName];
+			//console.log(list[key]);
+			var threshold;
+			var warningThreshold;
+			if (serverName == "SFO.DFS"){
+				threshold =70;
+				warningThreshold = 80;
+			}else if (serverName.includes("DR")){
+				threshold = 85;
+				warningThreshold = 90;
+			}else{
+				threshold = 80;
+				warningThreshold = 85;
+			}
+			if (asp>= warningThreshold){
+				newOutput+="<p class='warning2'>"+serverName +" = ";
+				newOutput+=asp +"%</p> </br>";
+			}else
+			if (asp>= threshold){
+				newOutput+="<p class='warning1'>"+serverName +" = ";
+				newOutput+=asp +"%</p> </br>";
+			}else{
+				newOutput+="<p class='normal'>"+serverName +" = ";
+				newOutput+=asp +"%</p> </br>";
+			}
+			
+			
+			
+		 }
+		 
+		 $("#asp-report").html(newOutput);
+
+		 //if (
+	  }
+		function sort_object(obj) {
+			items = Object.keys(obj).map(function(key) {
+				var score = 0;
+				if (key.includes("DR", 0)){
+					score=-10.0;
+				}else if (key.includes("SFO.DFS", 0)){
+					score=+15.0;
+				}
+				//console.log("test for " + key +": " + typeof obj[key]);
+				return [key, obj[key] + score];
+			});
+			items.sort(function(first, second) {
+				return second[1] - first[1];
+			});
+			sorted_obj={}
+			$.each(items, function(k, v) {
+				use_key = v[0];
+				use_value = v[1];
+				if (use_key.includes("DR", 0)){
+					use_value+=10.0;
+				}else if (use_key.includes("SFO.DFS", 0)){
+					use_value-=15.0;
+				}
+				sorted_obj[use_key] = use_value;
+			})
+			return(sorted_obj)
+		} 
+
+      function onmessage(event) { 
+         console.log("Data received: " + event.data); 
+		 if (event.data.includes("BRMSSAVE-MONITOR",0))
+			readBRMS(event.data);
+		 else if (event.data.includes("ASP-MONITOR",0))
+		    readASP(event.data);
+
+      }
+
+      function onclose(e) {
+         console.log("Connection closed.");              
+      }
+
+      window.addEventListener("load", connect, false);
+	
+			
+ 
+      
+    </script>
+  </body>
+</html>
