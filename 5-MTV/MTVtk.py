@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 from tkinter import *
 from tkinter import Tk, ttk, font
@@ -22,18 +22,18 @@ class App(ttk.Frame):
 
   def create_widgets(self):
     self.selected_date = StringVar()
-    cal = Calendar(self, selectmode='day', locale='en_US', 
-          date_pattern="yyyy-mm-dd", maxdate=datetime.date.today(),
-          disabledforeground='red', textvariable=self.selected_date)
+    cal = Calendar(self, selectmode='day', locale='en_US',
+                   date_pattern="yyyy-mm-dd", maxdate=datetime.date.today(), 
+                   disabledforeground='red',textvariable=self.selected_date)
     cal.grid(column=0, row=0, columnspan=2, sticky='nesw')
     
-    self.shift = StringVar()
+    self.shift = StringVar(value='day')
     ttk.Radiobutton(self, text='day', variable=self.shift,
     value='day').grid(column=0, row=2, sticky='e')
     ttk.Radiobutton(self, text='night', variable=self.shift, 
     value='night').grid(column=1, row=2, sticky='w')
 
-    self.uid = StringVar()
+    self.uid = StringVar(value='t.le')
     uid_entry = Entry(self, textvariable=self.uid)
     uid_entry.grid(column=1, row=3, sticky=(W,E))
     uid_entry.focus()

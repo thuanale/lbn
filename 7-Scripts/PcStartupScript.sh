@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 
-AgentPid="$(mktemp)/AGENT.PID"
+AgentPid="$HOME/AGENT.PID"
 
-if [[ -s $AgentPid ]]; then
+if (( $(grep -c ssh-agent <(ps aux)) >=2 and -s $AgentPid )); then
   source $AgentPid
 else
   eval $(ssh-agent -s)
@@ -14,8 +14,9 @@ ssh-add $HOME/.ssh/id_ed25519
 echo "+++ LOAD KEY FOR DFS BASTION HOSTS +++"
 ssh-add $HOME/.ssh/ssh-pri
 
-# Port forwarding for AS400 Server Monitoring Web App
+echo "+++ Local port forwarding for AS400 Monitoring webapp. +++"
 ssh -L 8989:10.242.0.38:3389 t.le@172.21.198.39 -N -f
-# Dynamic port forwarding for other Application at DFS.
+echo "+++ Dynamic port forwarding for other Application at DFS. +++"
 ssh -C -D 8888 t.le@172.21.198.39 -N -f
+echo "END."
 

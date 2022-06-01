@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 from Crowntk import App
 from tkinter import Tk
 
