@@ -3,7 +3,10 @@
 from tkinter import *
 from tkinter import Tk, ttk
 from login_web import *
-FILE = "TAPES.txt"
+import sys
+from os.path import dirname
+
+FILE = "{path}/TAPES.txt".format(path = dirname(sys.argv[0]))
 
 class App(ttk.Frame):  
   def __init__(self,master=None):

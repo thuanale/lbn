@@ -1,10 +1,12 @@
 from selenium.webdriver import Chrome
 import page
 import sys
+from os.path import dirname
+import sys
 
 class CrownRM(): 
     def setup(self):
-        self.driver = Chrome("./chromedriver") 
+        self.driver = Chrome("{path}/chromedriver".format(path = dirname(sys.argv[0]))) 
         self.driver.get('https://rmorder09.rminteract.com/')
         
     def login(self,UID,PW):
