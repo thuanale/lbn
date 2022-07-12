@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import requests
 import datetime
 
@@ -38,7 +40,7 @@ class Submit(Base):
         
     DFS1 = {
         "CreationDate":"",
-        "Duration":"240",
+        "Duration":"360",
         "ActivityId":"2515",
         "CompanyId":"3312",
         "ProjectId":"19713",
@@ -65,6 +67,6 @@ class Submit(Base):
             next_date = datetime.date.fromisoformat(date) + datetime.timedelta(days=1)
             self.DFS2["CreationDate"] = str(next_date)         
         
-        for data in (self.Internal, self.DFS1, self.DFS2):
+        for data in (self.DFS1, self.DFS2):
             self.session.post(self.url + '/MTV.json/AddTime',json=data)
 
