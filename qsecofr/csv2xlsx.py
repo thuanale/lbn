@@ -8,7 +8,8 @@ import pandas as pd
 directory = "/home/thomas-le/Desktop/xxxn/qsecofr"
 newDir = "{0}/new".format(directory)
 oldDir = "{0}/old".format(directory)
-monthlyFile = "{0}/Qsecofr_Audit_Review_{1}.xlsx".format(directory, date.today().strftime("%b_%Y"))
+today = date.today()
+monthlyFile = "{0}/Qsecofr_Audit_Review_{1}.xlsx".format(directory, today.replace(month = today.month - 1).strftime("%b_%Y"))
 servers = ["CAM","CATS","CLUX","DFSNZ1","FRANCE","GDC","GVA","HKGA","HNL","INDO","ITL","KOREA","LAX1","MIDEAST","MIDPAC","PAD1","PAX1","PRC","SAP2PFS", "SFO2", "SFO", "SIN2", "SYD"]
 
 def checkFiles():
@@ -27,14 +28,21 @@ def checkFiles():
     return False
 
 def createReport():
-  newFiles = sorted(glob.glob("./{0}/*.csv".format(newDir)))
-  oldFiles = sorted(glob.glob("./{0}/*.csv".format(oldDir)))
+  newFiles = sorted(glob.glob("{0}/*.csv".format(newDir)))
+  oldFiles = sorted(glob.glob("{0}/*.csv".format(oldDir)))
+  results = pd.DataFrame()
   for newFile, oldFile in zip(newFiles, oldFiles):
     old = pd.read_csv(oldFile,encoding='unicode_escape',header=None).iloc[:,3:]
     new = pd.read_csv(newFile,encoding='unicode_escape',header=None).iloc[:,3:]
     result = pd.concat([new,old]).drop_duplicates(keep=False)
     if not result.empty:
       results = pd.concat([results,result])
+
+  if not results.empty:
+    print("There are minor changes as below. Please have a check!")
+    print(results)
+  else:
+    print("There is no changes between two months.")
 
 def createExcel():
   with pd.ExcelWriter(monthlyFile) as writer:
